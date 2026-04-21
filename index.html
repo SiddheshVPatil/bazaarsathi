@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>bazaarsathi — No Signup, Download PDF Instantly</title>
+  <meta name="description" content="Generate professional GST invoices online for free. No login required. Supports CGST, SGST, IGST. Download PDF instantly. Perfect for small businesses, freelancers, and traders.">
+  <meta name="keywords" content="GST invoice generator, free GST invoice, tax invoice India, GST bill maker, online invoice generator India">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- jsPDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="logo">Bazaar<span>Sathi</span></div>
+  <div class="header-actions">
+    <button class="btn btn-ghost btn-sm" onclick="switchTab('history');renderHistory()">📋 History</button>
+    <button class="btn btn-primary btn-sm" onclick="downloadPDF()">⬇ Download PDF</button>
+  </div>
+</header>
+
+<!-- ===== TABS ===== -->
+<div class="tabs-bar">
+  <div class="tab active" onclick="switchTab('generator')">🧾 Invoice Generator</div>
+  <div class="tab" onclick="switchTab('history');renderHistory()">📋 Invoice History</div>
+</div>
+
+<!-- ===== GENERATOR TAB ===== -->
+<div class="tab-panel active" id="tab-generator">
+  <div class="main-layout">
+
+    <!-- ---- LEFT: FORM ---- -->
+    <div class="form-col">
+
+      <!-- Invoice Settings -->
+      <div class="card">
+        <div class="card-title">
+          <div class="icon">⚙</div> Invoice Settings
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Document Type</label>
+            <div class="toggle-group">
+              <div class="toggle-option active" onclick="setDocType('tax')" id="tog-tax">Tax Invoice</div>
+              <div class="toggle-option" onclick="setDocType('bill')" id="tog-bill">Bill of Supply</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Invoice Prefix</label>
+            <input type="text" id="inv-prefix" value="INV" maxlength="10" oninput="updatePreview()" placeholder="INV, 2025, RT…">
+          </div>
+          <div class="field">
+            <label>Invoice Number</label>
+            <input type="text" id="inv-number" value="001" oninput="updatePreview()">
+          </div>
+          <div class="field">
+            <label>Invoice Date</label>
+            <input type="date" id="inv-date" oninput="updatePreview()">
+          </div>
+          <div class="field">
+            <label>Due Date (optional)</label>
+            <input type="date" id="inv-due" oninput="updatePreview()">
+          </div>
+          <div class="field">
+            <label>Place of Supply</label>
+            <select id="pos-state" onchange="updatePreview()"></select>
+          </div>
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;font-size:13px;font-weight:600">
+            <input type="checkbox" id="reverse-charge" onchange="updatePreview()" style="width:auto;accent-color:var(--accent)">
+            Reverse Charge Applicable
+          </label>
+        </div>
+      </div>
+
+      <!-- Seller -->
+      <div class="card">
+        <div class="flex-between">
+          <div class="card-title" style="margin-bottom:0">
+            <div class="icon">🏢</div> Your Business (Seller)
+          </div>
+          <button class="btn btn-sm btn-outline" onclick="saveSellerProfile()">💾 Save Profile</button>
+        </div>
+        <div style="height:12px"></div>
+
+        <!-- Logo Upload -->
+        <div class="field" style="margin-bottom:12px">
+          <label>Business Logo (optional)</label>
+          <div class="logo-upload-area" onclick="document.getElementById('logo-input').click()">
+            <input type="file" id="logo-input" accept="image/*" onchange="handleLogoUpload(event)" style="display:none">
+            <div id="logo-display">
+              <div class="logo-upload-text">📷 Click to upload logo (PNG / JPG)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="field form-full">
+            <label>Business Name *</label>
+            <input type="text" id="seller-name" placeholder="Raju Traders" oninput="updatePreview()">
+          </div>
+
+          <!-- GSTIN with verify link -->
+          <div class="field form-full" id="gstin-field">
+            <label>GSTIN *</label>
+            <div class="gstin-row">
+              <div>
+                <input type="text" id="seller-gstin" placeholder="27AABCU9603R1ZX"
+                  maxlength="15" oninput="validateGSTIN('seller-gstin','seller-gstin-hint')"
+                  style="text-transform:uppercase">
+                <div class="field-hint" id="seller-gstin-hint"></div>
+              </div>
+              <a href="https://services.gst.gov.in/services/searchtp" target="_blank"
+                class="btn btn-outline btn-sm" style="margin-top:2px;white-space:nowrap">
+                🔍 Verify
+              </a>
+            </div>
+          </div>
+
+          <div class="field form-full">
+            <label>Address</label>
+            <textarea id="seller-address" rows="2" placeholder="Shop 4, Market Road, Pune 411001" oninput="updatePreview()"></textarea>
+          </div>
+          <div class="field">
+            <label>State *</label>
+            <select id="seller-state" onchange="updatePreview()"></select>
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input type="text" id="seller-phone" placeholder="9876543210" oninput="updatePreview()">
+          </div>
+          <div class="field form-full">
+            <label>Email</label>
+            <input type="email" id="seller-email" placeholder="raju@example.com" oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Buyer -->
+      <div class="card">
+        <div class="card-title"><div class="icon">👤</div> Buyer / Client Details</div>
+        <div class="form-grid">
+          <div class="field form-full">
+            <label>Buyer Name / Business *</label>
+            <input type="text" id="buyer-name" placeholder="ABC Enterprises" oninput="updatePreview()">
+          </div>
+
+          <div class="field form-full">
+            <label>Buyer GSTIN (optional)</label>
+            <div class="gstin-row">
+              <div>
+                <input type="text" id="buyer-gstin" placeholder="Leave blank if unregistered buyer"
+                  maxlength="15" oninput="validateGSTIN('buyer-gstin','buyer-gstin-hint')"
+                  style="text-transform:uppercase">
+                <div class="field-hint" id="buyer-gstin-hint"></div>
+              </div>
+              <a href="https://services.gst.gov.in/services/searchtp" target="_blank"
+                class="btn btn-outline btn-sm" style="margin-top:2px;white-space:nowrap">
+                🔍 Verify
+              </a>
+            </div>
+          </div>
+
+          <div class="field form-full">
+            <label>Address</label>
+            <textarea id="buyer-address" rows="2" placeholder="123 MG Road, Bangalore 560001" oninput="updatePreview()"></textarea>
+          </div>
+          <div class="field">
+            <label>State</label>
+            <select id="buyer-state" onchange="updatePreview()"></select>
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input type="text" id="buyer-phone" placeholder="9876543210" oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Items -->
+      <div class="card">
+        <div class="card-title"><div class="icon">📦</div> Items / Services</div>
+        <div style="overflow-x:auto">
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th style="min-width:150px">Description</th>
+                <th style="min-width:90px">HSN/SAC</th>
+                <th style="min-width:55px">Qty</th>
+                <th style="min-width:55px">Unit</th>
+                <th style="min-width:80px">Rate (₹)</th>
+                <th style="min-width:70px">GST %</th>
+                <th style="min-width:80px">Amount</th>
+                <th style="width:36px"></th>
+              </tr>
+            </thead>
+            <tbody id="items-body"></tbody>
+          </table>
+        </div>
+        <button class="btn btn-outline" style="margin-top:10px;width:100%" onclick="addItem()">
+          ＋ Add Item
+        </button>
+      </div>
+
+      <!-- Notes & Bank -->
+      <div class="card">
+        <div class="card-title"><div class="icon">📝</div> Notes & Bank Details</div>
+        <div class="field">
+          <label>Notes (shown on invoice)</label>
+          <textarea id="inv-notes" rows="2"
+            placeholder="Thank you for your business. Payment due within 30 days."
+            oninput="updatePreview()"></textarea>
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label>Bank Details (optional)</label>
+          <textarea id="inv-bank" rows="2"
+            placeholder="Bank: SBI | A/C: 1234567890 | IFSC: SBIN0001234"
+            oninput="updatePreview()"></textarea>
+        </div>
+      </div>
+
+      <!-- Tax Summary -->
+      <div class="summary-box">
+        <div class="summary-row">
+          <span class="slabel">Subtotal</span>
+          <span class="svalue" id="sum-subtotal">₹0.00</span>
+        </div>
+        <div class="summary-row" id="cgst-row">
+          <span class="slabel">CGST</span>
+          <span class="svalue" id="sum-cgst">₹0.00</span>
+        </div>
+        <div class="summary-row" id="sgst-row">
+          <span class="slabel">SGST</span>
+          <span class="svalue" id="sum-sgst">₹0.00</span>
+        </div>
+        <div class="summary-row" id="igst-row" style="display:none">
+          <span class="slabel">IGST</span>
+          <span class="svalue" id="sum-igst">₹0.00</span>
+        </div>
+        <div class="summary-row">
+          <span class="slabel">
+            Grand Total
+            <span class="tax-type-badge" id="tax-type-badge">CGST+SGST</span>
+          </span>
+          <span class="svalue" id="sum-total">₹0.00</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-bar">
+        <button class="btn btn-success"  onclick="downloadPDF()">⬇ Download PDF</button>
+        <button class="btn btn-primary"  onclick="saveToHistory()">💾 Save Invoice</button>
+        <button class="btn btn-outline"  onclick="window.print()">🖨 Print</button>
+        <button class="btn btn-outline"  onclick="resetForm()">🔄 New Invoice</button>
+      </div>
+
+      <div class="note" style="margin-top:16px">
+        ⚠️ This tool generates invoice format only. Users are responsible for accuracy of all entered
+        information. Verify GSTIN on the official GST portal before issuing invoices.
+      </div>
+      <div style="height:40px"></div>
+    </div>
+    <!-- ---- end form-col ---- -->
+
+    <!-- ---- RIGHT: LIVE PREVIEW ---- -->
+    <div class="preview-col">
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">
+        Live Preview
+      </div>
+      <div class="invoice-preview" id="invoice-preview"></div>
+    </div>
+
+  </div>
+</div>
+<!-- ===== end generator tab ===== -->
+
+<!-- ===== HISTORY TAB ===== -->
+<div class="tab-panel" id="tab-history">
+  <div style="max-width:800px;margin:0 auto;padding:24px">
+    <div class="flex-between">
+      <h2 style="font-family:'DM Serif Display',serif;font-size:1.4rem">Invoice History</h2>
+      <button class="btn btn-danger" onclick="clearHistory()">🗑 Clear All</button>
+    </div>
+    <div style="height:16px"></div>
+    <div id="history-list"></div>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS =====
+     Load order matters:
+     1. data.js   — STATES, HSN_DATA, GST_RATES, UNITS  (no dependencies)
+     2. script.js — app logic, uses data.js globals
+     3. pdf.js    — PDF generation only, uses helpers from script.js
+-->
+<script src="data.js"></script>
+<script src="script.js"></script>
+<script src="pdf.js"></script>
+
+</body>
+</html>
