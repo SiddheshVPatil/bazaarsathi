@@ -34,8 +34,8 @@ function init() {
     document.getElementById('inv-number').value = String(lastNum + 1).padStart(3, '0');
   }
 
-  // Load saved seller profile
-  loadSellerProfile();
+  // Check if saved profile exists and show load button
+  checkSavedProfile();
 
   // Add first empty item row
   addItem();
@@ -584,8 +584,10 @@ function clearHistory() {
    SELLER PROFILE (localStorage)
    ================================================ */
 function saveSellerProfile() {
+  const name = v('seller-name');
+  if (!name) { alert('Please enter your Business Name before saving profile.'); return; }
   localStorage.setItem('gst_seller', JSON.stringify({
-    name:    v('seller-name'),
+    name,
     gstin:   v('seller-gstin'),
     address: v('seller-address'),
     state:   v('seller-state'),
@@ -593,7 +595,28 @@ function saveSellerProfile() {
     email:   v('seller-email'),
     logo:    logoBase64,
   }));
-  alert('Seller profile saved! It will auto-fill on your next visit.');
+  alert('Profile saved! Use "Load Profile" button next time to fill your details.');
+  checkSavedProfile();
+}
+
+/** Show a banner if a saved profile exists — user can choose to load it or ignore */
+function checkSavedProfile() {
+  const banner = document.getElementById('profile-banner');
+  if (!banner) return;
+  try {
+    const p = JSON.parse(localStorage.getItem('gst_seller'));
+    if (p && p.name) {
+      banner.innerHTML = `
+        <span>💾 Saved profile found: <strong>${esc(p.name)}</strong></span>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-sm btn-success" onclick="loadSellerProfile()">Load Profile</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteSavedProfile()">Delete</button>
+        </div>`;
+      banner.style.display = 'flex';
+    } else {
+      banner.style.display = 'none';
+    }
+  } catch (e) { banner.style.display = 'none'; }
 }
 
 function loadSellerProfile() {
@@ -613,7 +636,15 @@ function loadSellerProfile() {
          <span class="logo-upload-text" style="font-size:10px">Click to change</span>`;
     }
     if (p.gstin) validateGSTIN('seller-gstin', 'seller-gstin-hint');
+    updatePreview();
+    document.getElementById('profile-banner').style.display = 'none';
   } catch (e) {}
+}
+
+function deleteSavedProfile() {
+  if (!confirm('Delete saved profile?')) return;
+  localStorage.removeItem('gst_seller');
+  document.getElementById('profile-banner').style.display = 'none';
 }
 
 /* ================================================
@@ -680,9 +711,31 @@ function v(id) { return document.getElementById(id)?.value || ''; }
 /** Set form input value */
 function sv(id, val) { const el = document.getElementById(id); if (el) el.value = val || ''; }
 
-/** Format number in Indian locale with 2 decimals */
+/** Format number in Indian locale with 2 decimals — for HTML preview only */
 function fmt(n) {
   return Number(n || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+/**
+ * Format number for PDF — avoids rupee symbol and locale issues in jsPDF.
+ * Uses plain commas in Indian grouping (e.g. 11,80,00,000.00)
+ */
+function fmtPDF(n) {
+  const num = Number(n || 0);
+  const [intPart, decPart] = num.toFixed(2).split('.');
+  // Indian grouping: last 3 digits, then groups of 2
+  const int = parseInt(intPart);
+  if (int === 0) return 'Rs. 0.' + decPart;
+  let s = intPart;
+  let result = s.slice(-3);
+  s = s.slice(0, -3);
+  while (s.length > 0) {
+    result = s.slice(-2) + ',' + result;
+    s = s.slice(0, -2);
+  }
+  // Remove leading comma if any
+  result = result.replace(/^,/, '');
+  return 'Rs. ' + result + '.' + decPart;
 }
 
 /** Escape HTML special characters */
