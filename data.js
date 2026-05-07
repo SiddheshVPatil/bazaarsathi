@@ -3,6 +3,30 @@
    All static reference data: states, HSN, rates
    ================================================ */
 
+const COUNTRIES = [
+  { code: 'IN',     name: 'India',                taxLabel: 'GSTIN',      taxName: 'GST',     currency: '₹',    hasStateSplit: true  },
+  { code: 'US',     name: 'United States',         taxLabel: 'EIN/TIN',    taxName: 'Sales Tax', currency: '$',  hasStateSplit: false },
+  { code: 'GB',     name: 'United Kingdom',        taxLabel: 'VAT No',     taxName: 'VAT',     currency: '£',    hasStateSplit: false },
+  { code: 'PL',     name: 'Poland',                taxLabel: 'NIP',        taxName: 'VAT',     currency: 'zł',   hasStateSplit: false },
+  { code: 'AE',     name: 'United Arab Emirates',  taxLabel: 'TRN',        taxName: 'VAT',     currency: 'د.إ', hasStateSplit: false },
+  { code: 'AU',     name: 'Australia',             taxLabel: 'ABN',        taxName: 'GST',     currency: '$',    hasStateSplit: false },
+  { code: 'CA',     name: 'Canada',                taxLabel: 'BN/GST No',  taxName: 'GST/HST', currency: '$',    hasStateSplit: false },
+  { code: 'CN',     name: 'China',                 taxLabel: 'Tax ID',     taxName: 'VAT',     currency: '¥',    hasStateSplit: false },
+  { code: 'GLOBAL', name: 'Other (Global)',         taxLabel: 'Tax ID',     taxName: 'Tax',     currency: '$',    hasStateSplit: false }
+];
+
+const CURRENCIES = [
+  { code: 'INR', symbol: '₹'    },
+  { code: 'USD', symbol: '$'    },
+  { code: 'EUR', symbol: '€'    },
+  { code: 'GBP', symbol: '£'    },
+  { code: 'PLN', symbol: 'zł'   },
+  { code: 'AED', symbol: 'د.إ' },
+  { code: 'CAD', symbol: '$'    },
+  { code: 'AUD', symbol: '$'    },
+  { code: 'CNY', symbol: '¥'    }
+];
+
 const STATES = [
   { code: '01', name: 'Jammu & Kashmir' },
   { code: '02', name: 'Himachal Pradesh' },
