@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HT61FPW5GD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HT61FPW5GD');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Blog — GST, Billing & Business Guides | BazaarSathi</title>
+  <link rel="icon" type="image/x-icon" href="bazaarsathi_icon.png">
+  <meta name="description" content="Simple guides on GST invoicing, billing, tax rules and running a small business in India and globally. Free resources by BazaarSathi.">
+  <meta name="keywords" content="GST invoice generator, free billing tool India, GST guide, small business India, freelancer invoice, bazaarsathi, GST invoice generator, GST billing software free, GST invoice format PDF, GST invoice for freelancers, small business billing tool, traders invoice maker, GST billing for startups, service invoice generator India, no login invoice maker, free PDF bill download, CGST SGST IGST calculator, automated GST billing, simple invoice creator">
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Mulish:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="blog.css">
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="blog-nav">
+  <div class="blog-nav-inner">
+    <a href="home.html" class="blog-nav-logo">Bazaar<span>Sathi</span></a>
+    <div class="blog-nav-links">
+      <a href="tool.html" class="bnav-link">Invoice Tool</a>
+      <a href="blog.html" class="bnav-link active">Blog</a>
+      <a href="tool.html" class="bnav-cta">Generate Invoice →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="blog-hero">
+  <div class="blog-hero-inner">
+    <div class="blog-hero-badge">📖 Guides & Resources</div>
+    <h1 class="blog-hero-title">GST, Billing & Business<br><span>Made Simple</span></h1>
+    <p class="blog-hero-sub">Plain-language guides for small businesses, freelancers and traders — in India and globally.</p>
+
+    <!-- Search -->
+    <div class="blog-search-wrap">
+      <input type="text" id="blog-search" placeholder="Search articles… e.g. CGST, freelancer, VAT" oninput="filterArticles()">
+      <span class="blog-search-icon">🔍</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FILTER TABS ===== -->
+<div class="blog-filter-bar">
+  <div class="blog-filter-inner">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('gst-basics',this)">GST Basics</button>
+    <button class="filter-btn" onclick="setFilter('freelancers',this)">Freelancers</button>
+    <button class="filter-btn" onclick="setFilter('small-business',this)">Small Business</button>
+    <button class="filter-btn" onclick="setFilter('international',this)">International</button>
+    <button class="filter-btn" onclick="setFilter('how-to',this)">How To</button>
+  </div>
+</div>
+
+<!-- ===== ARTICLES GRID ===== -->
+<main class="blog-main">
+  <div class="blog-main-inner">
+
+    <!-- Featured article -->
+    <div class="featured-wrap" id="featured-wrap">
+      <a href="blog/what-is-gst-invoice.html" class="featured-card" data-category="gst-basics" data-title="what is a gst invoice and who needs one">
+        <div class="featured-badge">⭐ Featured</div>
+        <div class="featured-content">
+          <div class="article-tag">GST Basics</div>
+          <h2 class="featured-title">What is a GST Invoice and who needs one?</h2>
+          <p class="featured-desc">A complete beginner's guide to GST invoices — what they are, when you must issue one, what details are mandatory, and how to stay compliant.</p>
+          <div class="article-meta">
+            <span>📅 May 2026</span>
+            <span>·</span>
+            <span>5 min read</span>
+          </div>
+        </div>
+        <div class="featured-cta">Read article →</div>
+      </a>
+    </div>
+    
+
+    <!-- Articles grid -->
+    <div class="articles-grid" id="articles-grid">
+
+      <!-- <a href="blog/cgst-sgst-igst-difference.html" class="article-card" data-category="gst-basics" data-title="cgst vs sgst vs igst whats the difference">
+        <div class="article-tag">GST Basics</div>
+        <h3 class="article-title">CGST vs SGST vs IGST — What's the difference?</h3>
+        <p class="article-desc">Understand why your invoice sometimes shows CGST+SGST and other times just IGST, and when each applies.</p>
+        <div class="article-meta">
+          <span>📅 May 2026</span><span>·</span><span>4 min read</span>
+        </div>
+      </a>
+
+      <a href="blog/freelancer-gst-invoice-guide.html" class="article-card" data-category="freelancers" data-title="how freelancers should raise gst invoices in india">
+        <div class="article-tag">Freelancers</div>
+        <h3 class="article-title">How freelancers should raise GST invoices in India</h3>
+        <p class="article-desc">Step-by-step guide for Indian freelancers — when to register for GST, what to put on your invoice, and how to handle foreign clients.</p>
+        <div class="article-meta">
+          <span>📅 May 2026</span><span>·</span><span>6 min read</span>
+        </div>
+      </a>
+
+      <a href="blog/hsn-sac-code-guide.html" class="article-card" data-category="gst-basics" data-title="hsn and sac codes explained">
+        <div class="article-tag">GST Basics</div>
+        <h3 class="article-title">HSN and SAC codes explained — and why they matter</h3>
+        <p class="article-desc">What are HSN and SAC codes, which one applies to your business, and what happens if you get them wrong on an invoice.</p>
+        <div class="article-meta">
+          <span>📅 May 2026</span><span>·</span><span>4 min read</span>
+        </div>
+      </a>
+
+      <a href="blog/bill-of-supply-vs-tax-invoice.html" class="article-card" data-category="gst-basics" data-title="bill of supply vs tax invoice">
+        <div class="article-tag">GST Basics</div>
+        <h3 class="article-title">Bill of Supply vs Tax Invoice — which do you issue?</h3>
+        <p class="article-desc">Two document types, two very different situations. Learn which one your business should be using and the legal difference between them.</p>
+        <div class="article-meta">
+          <span>📅 May 2026</span><span>·</span><span>3 min read</span>
+        </div>
+      </a>
+
+      <a href="blog/small-business-invoicing-tips.html" class="article-card" data-category="small-business" data-title="invoicing tips for small businesses india">
+        <div class="article-tag">Small Business</div>
+        <h3 class="article-title">7 invoicing tips every small business in India should follow</h3>
+        <p class="article-desc">Avoid common billing mistakes, get paid faster, and stay GST compliant with these practical tips for small business owners.</p>
+        <div class="article-meta">
+          <span>📅 May 2026</span><span>·</span><span>5 min read</span>
+        </div>
+      </a>
+
+      <a href="blog/international-invoice-guide.html" class="article-card" data-category="international" data-title="how to invoice international clients from india">
+        <div class="article-tag">International</div>
+        <h3 class="article-title">How to invoice international clients from India</h3>
+        <p class="article-desc">Foreign currency invoices, GST on exports, LUT filing, and what details your international invoice must include.</p>
+        <div class="article-meta">
+          <span>📅 May 2026</span><span>·</span><span>6 min read</span>
+        </div>
+      </a>
+
+      <a href="blog/gst-invoice-for-traders.html" class="article-card" data-category="small-business" data-title="gst invoice guide for traders and shopkeepers">
+        <div class="article-tag">Small Business</div>
+        <h3 class="article-title">GST invoice guide for traders and shopkeepers</h3>
+        <p class="article-desc">Whether you sell wholesale or retail, this guide covers exactly what your GST invoice needs to show and when you can simplify it.</p>
+        <div class="article-meta">
+          <span>📅 May 2026</span><span>·</span><span>4 min read</span>
+        </div>
+      </a>
+
+      <a href="blog/vat-invoice-uk-guide.html" class="article-card" data-category="international" data-title="vat invoice requirements uk">
+        <div class="article-tag">International</div>
+        <h3 class="article-title">VAT invoice requirements in the UK — a simple guide</h3>
+        <p class="article-desc">What a UK VAT invoice must include, when a simplified invoice is allowed, and how to handle cross-border sales after Brexit.</p>
+        <div class="article-meta">
+          <span>📅 May 2026</span><span>·</span><span>5 min read</span>
+        </div>
+      </a>
+
+      <a href="blog/how-to-use-bazaarsathi.html" class="article-card" data-category="how-to" data-title="how to use bazaarsathi invoice generator">
+        <div class="article-tag">How To</div>
+        <h3 class="article-title">How to use BazaarSathi to create a GST invoice in 2 minutes</h3>
+        <p class="article-desc">A quick walkthrough of every field in the invoice generator — from GSTIN to HSN codes to downloading your PDF.</p>
+        <div class="article-meta">
+          <span>📅 May 2026</span><span>·</span><span>3 min read</span>
+        </div>
+      </a> -->
+
+    </div>
+
+    <!-- Empty state -->
+    <div class="blog-empty" id="blog-empty" style="display:none">
+      <div class="blog-empty-icon">🔍</div>
+      <div class="blog-empty-text">No articles found for "<span id="empty-query"></span>"</div>
+      <button class="filter-btn active" style="margin-top:16px" onclick="clearSearch()">Clear search</button>
+    </div>
+
+  </div>
+</main>
+
+<!-- ===== CTA BANNER ===== -->
+<section class="blog-cta-banner">
+  <div class="blog-cta-inner">
+    <div>
+      <h2 class="blog-cta-title">Ready to create your invoice?</h2>
+      <p class="blog-cta-sub">Free, no login, download PDF instantly.</p>
+    </div>
+    <a href="tool.html" class="blog-cta-btn">Generate Free Invoice →</a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="blog-footer">
+  <div class="blog-footer-inner">
+    <div class="footer-logo">Bazaar<span>Sathi</span></div>
+    <div class="footer-links">
+      <a href="home.html">Home</a>
+      <a href="tool.html">Invoice Tool</a>
+      <a href="blog.html">Blog</a>
+    </div>
+    <div class="footer-note">© 2026 BazaarSathi · Free GST Invoice Generator</div>
+  </div>
+</footer>
+
+<script>
+  let currentFilter = 'all';
+
+  function setFilter(category, btn) {
+    currentFilter = category;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  function filterArticles() { applyFilters(); }
+
+  function applyFilters() {
+    const query    = document.getElementById('blog-search').value.toLowerCase().trim();
+    const cards    = document.querySelectorAll('.article-card');
+    const featured = document.querySelector('.featured-card');
+    let visibleCount = 0;
+
+    // Handle featured card
+    if (featured) {
+      const fCat   = featured.dataset.category;
+      const fTitle = featured.dataset.title;
+      const fMatch = (currentFilter === 'all' || fCat === currentFilter) &&
+                     (!query || fTitle.includes(query));
+      document.getElementById('featured-wrap').style.display = fMatch ? '' : 'none';
+      if (fMatch) visibleCount++;
+    }
+
+    // Handle grid cards
+    cards.forEach(card => {
+      const cat   = card.dataset.category;
+      const title = card.dataset.title;
+      const match = (currentFilter === 'all' || cat === currentFilter) &&
+                    (!query || title.includes(query));
+      card.style.display = match ? '' : 'none';
+      if (match) visibleCount++;
+    });
+
+    // Empty state
+    const empty = document.getElementById('blog-empty');
+    empty.style.display = visibleCount === 0 ? '' : 'none';
+    if (visibleCount === 0) {
+      document.getElementById('empty-query').textContent = query || currentFilter;
+    }
+  }
+
+  function clearSearch() {
+    document.getElementById('blog-search').value = '';
+    currentFilter = 'all';
+    document.querySelectorAll('.filter-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === 0);
+    });
+    applyFilters();
+  }
+</script>
+
+</body>
+</html>
